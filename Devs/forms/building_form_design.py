@@ -2,7 +2,7 @@
 
 import tkinter as tk
 import customtkinter as ctk
-from Util.util_config import COLOR_FONDO_BUILDING, FONT_AWSOME_20
+from util.util_config import COLOR_FONDO_BUILDING, FONT_AWSOME_20
 
 class BuildingFormDesign():
     
