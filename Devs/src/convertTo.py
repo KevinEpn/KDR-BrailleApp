@@ -7,8 +7,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from PIL import Image, ImageDraw, ImageFont
 
-from Code.T2B_code import T2BCode
-from Util.util_path import UtilPath
+from src.T2B_code import T2BCode
+from util.util_path import UtilPath
 
 class ConvertTo():
 
