@@ -1,5 +1,5 @@
 # Main class called BrailleApp-KDR
-from Forms.main_form_design import MainFormDesign
+from forms.main_form_design import MainFormDesign
 
 class BrailleApp_KDR():
     def __init__(self):

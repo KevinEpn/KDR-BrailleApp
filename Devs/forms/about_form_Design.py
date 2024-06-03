@@ -2,8 +2,8 @@
 
 import tkinter as tk
 import customtkinter as ctk
-import Util.util_ventana as util_vent
-from Util.util_config import FONT_AWSOME_20
+import util.util_ventana as util_vent
+from util.util_config import FONT_AWSOME_20
 
 class AboutFormDesign(ctk.CTkToplevel):
     

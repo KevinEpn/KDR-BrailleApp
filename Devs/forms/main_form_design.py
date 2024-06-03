@@ -4,7 +4,7 @@ import customtkinter as ctk
 import util.util_ventana as util_vent
 from util.util_config import FONT_ROBOTO_15, FONT_AWSOME_20, FONT_AWSOME_10
 
-from forms.about_form_design import AboutFormDesign
+from forms.about_form_Design import AboutFormDesign
 from forms.building_form_design import BuildingFormDesign
 from forms.T2B_form_design import T2BFormDesign
 
