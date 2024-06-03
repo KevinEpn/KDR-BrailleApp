@@ -1,14 +1,15 @@
-2B Form design
+# T2B Form design
+
 
 import tkinter as tk
 from tkinter import font
 import customtkinter as ctk
 from customtkinter import CTkFont
 
-from Util.util_config import FONT_AWSOME_20, FONT_ROBOTO_15, FONT_ARIAL_15, FG_TEXTBOX
+from util.util_config import FONT_AWSOME_20, FONT_ROBOTO_15, FONT_ARIAL_15, FG_TEXTBOX
 
-from Code.T2B_code import T2BCode
-from Code.convertTo import ConvertTo
+from src.T2B_code import T2BCode
+from src.convertTo import ConvertTo
 
 class T2BFormDesign():
     def __init__(self, main_panel):
