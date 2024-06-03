@@ -24,3 +24,4 @@ class BuildingFormDesign():
             fg_color = COLOR_FONDO_BUILDING
         )
         self.labelTitulo.pack(side='top', fill='both', expand = False)
+        
