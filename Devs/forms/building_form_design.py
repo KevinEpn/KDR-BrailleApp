@@ -14,10 +14,10 @@ class BuildingFormDesign():
         self.bottom_bar.pack(side='bottom', fill='both', expand = True)
 
         self.labelTitulo = tk.Label(
-            self.top_bar, text = "EN CONSTRUCCION"
+            self.top_bar, text = "EN CONSTRUCCIÓN"
         )
         self.labelTitulo = ctk.CTkLabel(
-            self.top_bar, text = "EN CONSTRUCCION"
+            self.top_bar, text = "EN CONSTRUCCIÓN"
         )
         self.labelTitulo.configure(
             text_color = "DARKRED", font = FONT_AWSOME_20,
