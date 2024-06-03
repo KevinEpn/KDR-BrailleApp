@@ -1,13 +1,12 @@
 # Main form class called main_form_design
 
-import tkinter as tk
-from tkinter import font
 import customtkinter as ctk
-from customtkinter import CTkFont
 import util.util_ventana as util_vent
 from util.util_config import FONT_ROBOTO_15, FONT_AWSOME_20, FONT_AWSOME_10
 
-
+from forms.about_form_design import AboutFormDesign
+from forms.building_form_design import BuildingFormDesign
+from forms.T2B_form_design import T2BFormDesign
 
 # Set colores de la GUI
 ctk.set_appearance_mode("system")
@@ -111,13 +110,15 @@ class MainFormDesign(ctk.CTk):
 
     # Funcionalides Botones
     def open_about(self):
-        print("Open about")
+        AboutFormDesign()
 
     def open_build(self):
-        print("Open build")
+        self.clear_panel(self.fondo)
+        BuildingFormDesign(self.fondo)
 
     def open_T2B(self):
-        print("Open T2B")
+        self.clear_panel(self.fondo)
+        T2BFormDesign(self.fondo)
 
     def clear_panel(self, panel):
         for widget in panel.winfo_children():
