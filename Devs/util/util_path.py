@@ -14,5 +14,6 @@ class UtilPath():
         return os.path.join(base_path, relative_path)
     
     def get_font_path(self):
-        ruta_fuente = self.resource_path("fonts\\ONCE_CBE_6.ttf")
+        # TODO \\fonts\\...
+        ruta_fuente = self.resource_path("Devs\\fonts\\ONCE_CBE_6.ttf")
         return ruta_fuente    
