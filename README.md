@@ -14,7 +14,7 @@ Desarrollado por: KDR Consultech
   - [Introducción](#introducción)
   - [Requisitos del Sistema](#requisitos-del-sistema)
   - [Instalación](#instalación)
-  - [Iniciar la Aplicación](#iniciar-la-aplicación)
+  - [Instalar Aplicación de Escritorio](#instalar-aplicación-de-escritorio)
   - [Uso de la Aplicación](#uso-de-la-aplicación)
     - [Guardar Traducción como PDF](#guardar-traducción-como-pdf)
     - [Guardar Traducción como PNG](#guardar-traducción-como-png)
@@ -47,15 +47,24 @@ El Traductor de Braille es una aplicación diseñada para convertir texto alfab�
    pip install tkinter customtkinter reportlab
    ```
 
-3. **Descargar la Aplicación**: Descargue el código fuente de la aplicación desde el repositorio o desde el archivo ZIP proporcionado.
+3. **Clonar repositorio de la Aplicación**: Descargue el código fuente de la aplicación desde el repositorio o desde el archivo ZIP proporcionado.
 
-4. **Ubicar Archivos**:Asegúrese de que los archivos BrailleApp_KDR.py, pdf_generation.py y user_data.json estén en el mismo directorio.
+4. **Ubicar Archivos**: Asegúrese de que los archivos BrailleApp_KDR.py, pdf_generation.py y user_data.json estén en el mismo directorio.
 
-## Iniciar la Aplicación
-
-Para iniciar la aplicación, abra una terminal, navegue al directorio donde se encuentra BrailleApp_KDR.py y ejecute:
+5. **Iniciar la Aplicación**: Para iniciar la aplicación, abra una terminal, navegue al directorio donde se encuentra BrailleApp_KDR.py y ejecute:
 
 python Braille_KDR.py
+
+## Instalar Aplicación de Escritorio
+
+1. **Descargar el archivo de instalacion**: El instalador se encuentra en nuestro repositorio de GitHub: [Enlace de descarga](https://github.com/KevinEpn/KDR-BrailleApp/raw/main/BrailleApp_WIN_1.0_setup.rar).<br>
+La descarga iniciara automáticamente, recuerda que el nombre del archivo es Braille App_WIN_1.0_setup.rar
+
+2. **Inicio de la Instalación:**: Una vez completada la descarga ubica el archivo .rar generalmente se encuentra en Descargas, extrae el contenido del archivo .rar<br>
+Localiza el archivo Braille App_WIN_1.0_setup.exe y ejecútalo (Es recomendable hacerlo como administrador)
+
+3. **Asistente de Aplicación**: A continuación, siga los pasos del asistente de instalación.<br>
+Para mas información revisa nuestro manual de Instalación.
 
 ## Uso de la Aplicación
 
