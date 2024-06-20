@@ -12,6 +12,8 @@ from src.convertTo import ConvertTo
 
 class T2BFormDesign():
     def __init__(self, main_panel):
+        self.traslator = T2BCode()
+        self.converter = ConvertTo()
         self.create_frames(main_panel)
         self.create_top_widgets()
         self.create_center_widgets()
@@ -39,7 +41,8 @@ class T2BFormDesign():
             self.top_frame, font = FONT_ARIAL_15, fg_color = FG_TEXTBOX
         )
         self.textBox_input.pack(padx=100, pady=5, side = 'top', fill='both', expand=True)
-        self.textBox_input.bind("<KeyRelease>", self.trad_2_braille)
+        self.textBox_input.bind("<<Modified>>", self.trad_2_braille)
+        self.textBox_input.edit_modified(False)
 
     def create_center_widgets(self):
         self.label_output = ctk.CTkLabel(
@@ -47,10 +50,30 @@ class T2BFormDesign():
             )
         self.label_output.pack(pady=5, side = 'top', fill='both', expand=False)
 
+        # Crear textbox de salida
         self.textBox_output = ctk.CTkTextbox(
-            self.center_frame, font = FONT_ARIAL_15, fg_color = FG_TEXTBOX
+            self.center_frame, font = FONT_ARIAL_15, fg_color = FG_TEXTBOX, state = 'disabled'
             )
         self.textBox_output.pack(padx=100, pady=5, side = 'top', fill='both', expand=True)
+
+        # Deshabilitar eventos de teclado y mouse en el textbox de salida
+        self.desabilitar_eventos_textbox()
+
+    def desabilitar_eventos_textbox(self):
+        for event in ["<Button-1>", "<B1-Motion>", "<Double-1>", "<Triple-1>",
+              "<ButtonRelease-1>", "<Button-2>", "<B2-Motion>", "<Double-2>", "<Triple-2>",
+              "<ButtonRelease-2>", "<Button-3>", "<B3-Motion>", "<Double-3>", "<Triple-3>",
+              "<ButtonRelease-3>", "<Motion>", "<Enter>", "<Leave>", "<MouseWheel>", "<Button-4>",
+              "<Button-5>", "<Shift-Button-1>", "<Shift-B1-Motion>", "<Control-Button-1>",
+              "<Control-B1-Motion>", "<Shift-ButtonRelease-1>", "<Control-ButtonRelease-1>",
+              "<Control-Shift-Button-1>", "<Control-Shift-B1-Motion>"]:
+            self.textBox_output.bind(event, self.disable_event())
+
+        for event in ["<Key>", "<Control-Key>", "<Shift-Key>", "<Alt-Key>", "<Meta-Key>", "<KeyPress>", "<KeyRelease>"]:
+            self.textBox_output.bind(event, self.disable_event())
+
+    def disable_event(event):
+        return "break"
         
     def create_bottom_widgets(self):
         # Crear botones
@@ -79,28 +102,27 @@ class T2BFormDesign():
 
     #########
     def trad_2_braille(self, event):
-        if not self.get_text():
-            new_text = " "
-        else:
-            print("Traducir")
-            
-            new_text = self.get_text()
-            print(new_text)
-    
-            T2BCode(new_text)
-            final_text = T2BCode.get_final_braille()
+        new_text = self.get_text()
+        
+        final_text = self.traslator.texto_a_braile(new_text)
+        self.textBox_output.configure(state = 'normal')
+        self.textBox_output.delete("1.0", 'end-1c')
 
-            self.textBox_output.delete("1.0", 'end')
-            self.textBox_output.insert("1.0", final_text)
+        self.textBox_output.insert("1.0", final_text)
+        self.textBox_output.configure(state = 'disabled')
+
+        self.textBox_input.edit_modified(False)
+
 
     def clear_textbox(self):
         print("Limpiar")
         self.textBox_input.delete("1.0", 'end')
         self.textBox_output.delete("1.0", 'end')
-        T2BCode.set_final_braille()
+        # T2BCode.set_final_braille()
+        # self.traslator.set_final_braille()
     
     def get_text(self):
-        return self.textBox_input.get("1.0", 'end-1c')
+        return self.textBox_input.get("1.0", 'end-1c').strip()
     
     def get_text_braille(self, text):
         return self.trad_2_braille()
@@ -111,8 +133,10 @@ class T2BFormDesign():
 
     def to_pdf_espejo(self):
         print("PDF Espejo")
-        ConvertTo().generar_pdf_espejo()
+        # ConvertTo().generar_pdf_espejo()
+        self.converter.generar_pdf_espejo()
 
     def to_img_normal(self):
         print("IMG Normal")
-        ConvertTo().convert_2_image()
+        # ConvertTo().convert_2_image()
+        self.converter.convert_2_image()

@@ -14,14 +14,40 @@ class ConvertTo():
 
     def __init__(self):
         print("convert")
-        self.raw_braille = T2BCode.get_final_braille()
+        # self.raw_braille = T2BCode.get_final_braille()
+        # self.traslator = T2BCode()
+        self.raw_braille = ''
+        self.pos = []
         self.ruta_fuente = UtilPath().get_font_path()
         self.set_font()
+
+    def get_raw_brallie(self):
+        return T2BCode().get_final_braille()
+    
+    def get_pos(self):
+        return T2BCode().get_pos()
 
     # Generar archivo PDF espejo
     def generar_pdf_espejo(self):
 
         archivo = self.get_save_name('0')
+        # self.pos = self.get_pos()
+        self.raw_braille = self.get_raw_brallie()
+
+        # if len(self.pos) > 0:
+        #     i = 0
+        #     j = 0
+        #     while i < len(self.pos):
+        #         while j < len(self.raw_braille):
+        #             char = self.raw_braille[j]
+        #             if j == self.pos[i]:
+        #                 if char != '*':
+        #                     self.raw_braille = self.raw_braille[:j] + '----' + self.raw_braille[j:]
+        #                     i += 1
+        #             j += 1
+
+
+
         
         # Crear un objeto canvas para el documento PDF
         if archivo:
@@ -36,20 +62,27 @@ class ConvertTo():
             # Configurar la fuente personalizada
             c.setFont("Braille", 20)  
 
-            # Configurar la impresión en modo espejo horizontalmente
-            c.scale(-1, 1)  # Invertir horizontalmente
+            # # Configurar la impresión en modo espejo horizontalmente
+            # c.scale(-1, 1)  # Invertir horizontalmente
 
-            # Dividir el texto en líneas para que quepa en la página
-            lineas = [self.raw_braille[i:i+35] for i in range(0, len(self.raw_braille), 35)]
+            # # Dividir el texto en líneas para que quepa en la página
+            # lineas = [self.raw_braille[i:i+35] for i in range(0, len(self.raw_braille), 35)]
 
-            # Definir la posición inicial para escribir el texto
-            x_inicial = -ancho + 50
-            y_inicial = alto - 50
+            # # Definir la posición inicial para escribir el texto
+            # x_inicial = -ancho + 50
+            # y_inicial = alto - 50
 
-            # Escribir el texto en el lienzo
-            for linea in lineas:
-                c.drawString(x_inicial, y_inicial, linea)
-                y_inicial -= 20 * 2   # Ajustar la posición vertical para la siguiente línea
+            # # Escribir el texto en el lienzo
+            # for linea in lineas:
+            #     c.drawString(x_inicial, y_inicial, linea)
+            #     y_inicial -= 20 * 2   # Ajustar la posición vertical para la siguiente línea
+            
+            c.transform(-1, 0, 0, 1, letter[0], 0)
+            text_object = c.beginText(40, letter[1] - 40)
+            for linea in self.raw_braille.split('\n'):
+                text_object.textLine(linea)
+            c.drawText(text_object)
+            c.showPage()
 
             # Guardar el PDF
             c.save()
@@ -63,6 +96,7 @@ class ConvertTo():
 
         # Filediallog para preguntar ruta para guardar la imagen
         archivo = self.get_save_name('1')
+        self.raw_braille = self.get_raw_brallie()
 
         if archivo:
             nombre = archivo
@@ -79,7 +113,8 @@ class ConvertTo():
                 fuente = ImageFont.truetype(self.ruta_fuente, 20)
 
                 # Dividir el texto en líneas para que quepa en la imagen
-                lineas = [self.raw_braille[i:i+35] for i in range(0, len(self.raw_braille), 35)]
+                # lineas = [self.raw_braille[i:i+35] for i in range(0, len(self.raw_braille), 35)]
+                lineas = self.raw_braille.split('\n')
 
                 # Definir la posición inicial para escribir el texto
                 x_inicial = 30
@@ -88,7 +123,7 @@ class ConvertTo():
                 # Escribir el texto en la imagen
                 for linea in lineas:
                     draw.text((x_inicial, y_inicial), linea, fill = text_color, font = fuente)
-                    y_inicial += 20 * 2
+                    y_inicial += 20
 
                 # Guardar imagen
                 imagen.save(nombre)
