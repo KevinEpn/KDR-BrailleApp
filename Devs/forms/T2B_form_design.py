@@ -8,16 +8,9 @@ from util.util_config import FONT_AWSOME_20, FONT_ROBOTO_15, FONT_ARIAL_15, FG_T
 from src.T2B_code import T2BCode
 from src.convertTo import ConvertTo
 import threading
-from util.util_config import FONT_AWSOME_20, FONT_ROBOTO_15, FONT_ARIAL_15, FG_TEXTBOX
-from src.T2B_code import T2BCode
-from src.convertTo import ConvertTo
-import threading
 
 class T2BFormDesign():
     def __init__(self, main_panel):
-        self.traslator = T2BCode()
-        self.converter = ConvertTo()
-        self.is_recording = False
         self.traslator = T2BCode()
         self.converter = ConvertTo()
         self.is_recording = False
@@ -45,17 +38,11 @@ class T2BFormDesign():
 
         self.label_input = ctk.CTkLabel(self.top_frame, text="Texto a Convertir", font=FONT_AWSOME_20)
         self.label_input.pack(pady=5, side='top', fill='both', expand=False)    
-        self.label_input = ctk.CTkLabel(self.top_frame, text="Texto a Convertir", font=FONT_AWSOME_20)
-        self.label_input.pack(pady=5, side='top', fill='both', expand=False)    
 
         # Crear Entry widget
         self.textBox_input = ctk.CTkTextbox(
             self.top_frame, font=FONT_ARIAL_15, fg_color=FG_TEXTBOX
-            self.top_frame, font=FONT_ARIAL_15, fg_color=FG_TEXTBOX
         )
-        self.textBox_input.pack(padx=100, pady=5, side='top', fill='both', expand=True)
-        self.textBox_input.bind("<<Modified>>", self.trad_2_braille)
-        self.textBox_input.edit_modified(False)
         self.textBox_input.pack(padx=100, pady=5, side='top', fill='both', expand=True)
         self.textBox_input.bind("<<Modified>>", self.trad_2_braille)
         self.textBox_input.edit_modified(False)
@@ -65,35 +52,9 @@ class T2BFormDesign():
             self.center_frame, text="Texto en Braille", font=FONT_AWSOME_20
         )
         self.label_output.pack(pady=5, side='top', fill='both', expand=False)
-            self.center_frame, text="Texto en Braille", font=FONT_AWSOME_20
-        )
-        self.label_output.pack(pady=5, side='top', fill='both', expand=False)
 
-        # Crear textbox de salida
         # Crear textbox de salida
         self.textBox_output = ctk.CTkTextbox(
-            self.center_frame, font=FONT_ARIAL_15, fg_color=FG_TEXTBOX, state='disabled'
-        )
-        self.textBox_output.pack(padx=100, pady=5, side='top', fill='both', expand=True)
-
-        # Deshabilitar eventos de teclado y mouse en el textbox de salida
-        self.desabilitar_eventos_textbox()
-
-    def desabilitar_eventos_textbox(self):
-        for event in ["<Button-1>", "<B1-Motion>", "<Double-1>", "<Triple-1>",
-                      "<ButtonRelease-1>", "<Button-2>", "<B2-Motion>", "<Double-2>", "<Triple-2>",
-                      "<ButtonRelease-2>", "<Button-3>", "<B3-Motion>", "<Double-3>", "<Triple-3>",
-                      "<ButtonRelease-3>", "<Motion>", "<Enter>", "<Leave>", "<MouseWheel>", "<Button-4>",
-                      "<Button-5>", "<Shift-Button-1>", "<Shift-B1-Motion>", "<Control-Button-1>",
-                      "<Control-B1-Motion>", "<Shift-ButtonRelease-1>", "<Control-ButtonRelease-1>",
-                      "<Control-Shift-Button-1>", "<Control-Shift-B1-Motion>"]:
-            self.textBox_output.bind(event, self.disable_event)
-
-        for event in ["<Key>", "<Control-Key>", "<Shift-Key>", "<Alt-Key>", "<Meta-Key>", "<KeyPress>", "<KeyRelease>"]:
-            self.textBox_output.bind(event, self.disable_event)
-
-    def disable_event(self, event):
-        return "break"
             self.center_frame, font=FONT_ARIAL_15, fg_color=FG_TEXTBOX, state='disabled'
         )
         self.textBox_output.pack(padx=100, pady=5, side='top', fill='both', expand=True)
@@ -124,15 +85,12 @@ class T2BFormDesign():
         self.button_espejo = ctk.CTkButton(self.bottom_frame)
         self.button_start_recording = ctk.CTkButton(self.bottom_frame, text="Iniciar Grabación", command=self.start_recording)
         self.button_stop_recording = ctk.CTkButton(self.bottom_frame, text="Detener Voz", command=self.stop_recording, state='disabled')
-        self.button_start_recording = ctk.CTkButton(self.bottom_frame, text="Iniciar Grabación", command=self.start_recording)
-        self.button_stop_recording = ctk.CTkButton(self.bottom_frame, text="Detener Voz", command=self.stop_recording, state='disabled')
         self.button_copy_braille = ctk.CTkButton(self.bottom_frame, text="Copiar Braille", command=self.copy_braille)
 
-        buttons_info =  [
+        buttons_info = [
             ("Limpiar", self.button_clear_box, "\uf00d", self.clear_textbox),
             ("IMG", self.button_img, "\uf04b", self.to_img_normal),
             ("PDF", self.button_espejo, "\uf04b", self.to_pdf_espejo),
-            ("Por voz", self.button_start_recording, "\uf04b", self.start_recording),
             ("Copiar", self.button_copy_braille, "\uf0c5", self.copy_braille)
         ]
 
@@ -144,26 +102,13 @@ class T2BFormDesign():
         self.button_start_recording.pack(padx=25, pady=5, side='left', fill='y', expand=True)
         self.button_stop_recording.pack(padx=25, pady=5, side='left', fill='y', expand=True)
 
-        
-        self.button_start_recording.pack(padx=25, pady=5, side='left', fill='y', expand=True)
-        self.button_stop_recording.pack(padx=25, pady=5, side='left', fill='y', expand=True)
-
     def bottom_buttons_config(self, button, text, icon, font, ancho, alto, cm):
         button.configure(
             text=f"{icon}  {text}", anchor="c", font=font, width=ancho, height=alto, command=cm
-            text=f"{icon}  {text}", anchor="c", font=font, width=ancho, height=alto, command=cm
         )
-        button.pack(padx=25, pady=5, side='right', fill='y', expand=True)
         button.pack(padx=25, pady=5, side='right', fill='y', expand=True)
 
     def trad_2_braille(self, event):
-        new_text = self.get_text()
-        final_text = self.traslator.texto_a_braile(new_text)
-        self.textBox_output.configure(state='normal')
-        self.textBox_output.delete("1.0", 'end-1c')
-        self.textBox_output.insert("1.0", final_text)
-        self.textBox_output.configure(state='disabled')
-        self.textBox_input.edit_modified(False)
         new_text = self.get_text()
         final_text = self.traslator.texto_a_braile(new_text)
         self.textBox_output.configure(state='normal')
@@ -177,23 +122,17 @@ class T2BFormDesign():
         self.textBox_output.delete("1.0", 'end')
         self.traslator.set_final_braille()
 
-        self.traslator.set_final_braille()
-
     def get_text(self):
-        return self.textBox_input.get("1.0", 'end-1c').strip()
-
         return self.textBox_input.get("1.0", 'end-1c').strip()
 
     def get_text_braille(self, text):
         return self.trad_2_braille()
-
 
     def clear_panel(self, panel):
         for widget in panel.winfo_children():
             widget.destroy()
 
     def to_pdf_espejo(self):
-        self.converter.generar_pdf_espejo()
         self.converter.generar_pdf_espejo()
 
     def to_img_normal(self):
@@ -233,35 +172,4 @@ class T2BFormDesign():
         self.textBox_output.clipboard_clear()
         self.textBox_output.clipboard_append(self.textBox_output.get("1.0", 'end-1c'))
         self.textBox_output.configure(state='disabled')
-        messagebox.showinfo("Copiar Braille", "El texto en Braille ha sido copiado al portapapeles.")
-
-        self.converter.convert_2_image()
-    
-    def start_recording(self):
-        self.is_recording = True
-        self.button_start_recording.configure(state='disabled')
-        self.button_stop_recording.configure(state='normal')
-        self.recording_thread = threading.Thread(target=self.record_audio)
-        self.recording_thread.start()
-        messagebox.showinfo("Grabación", "La grabación ha comenzado.")
-    
-    def stop_recording(self):
-        self.is_recording = False
-        self.button_start_recording.configure(state='normal')
-        self.button_stop_recording.configure(state='disabled')
-        self.recording_thread.join()
-        self.process_recorded_audio()
-        messagebox.showinfo("Grabación", "La grabación ha finalizado.")
-    
-    def record_audio(self):
-        self.audio_filename = "temp_audio.wav"
-        self.converter.recognizer.record_audio(self.audio_filename, duration=15)  # Ajusta la duración con 60 es muy lento
-    
-    def process_recorded_audio(self):
-        transcribed_text = self.converter.recognizer.transcribe_audio(self.audio_filename)
-        if transcribed_text:
-            self.textBox_input.delete("1.0", 'end')
-            self.textBox_input.insert("1.0", transcribed_text)
-            self.trad_2_braille(None)
-        else:
-            messagebox.showwarning("Transcription", "No se pudo transcribir el audio.")
+        messagebox.showinfo("Copiar Braille", "El texto en Braille ha sido copiado.")
