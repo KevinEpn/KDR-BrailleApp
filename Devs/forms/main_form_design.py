@@ -22,7 +22,7 @@ class MainFormDesign(ctk.CTk):
 
     def config_window(self):
         #Configuracion inicial de la ventana
-        w, h = 800, 600
+        w, h = 1024, 600
         self.title('Traductor de Braille')
         self.geometry(f'{w}x{h}')
         util_vent.centrar_ventana(self, w, h)
