@@ -21,6 +21,7 @@ class ConvertTo():
         self.ruta_fuente = UtilPath().get_font_path()
         self.set_font()
         
+        #ruta de personal, se cuelga cuando se manda el modelo general
         model_path = r"C:\Users\johan\OneDrive\Escritorio\2024-A\CALIDAD DE SOFTWARE\PROYECTO pt2\vosk-model-small-es-0.42"
         self.recognizer = VoskRecognizer(model_path)
 
