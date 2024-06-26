@@ -83,14 +83,16 @@ class T2BFormDesign():
         self.button_clear_box = ctk.CTkButton(self.bottom_frame)
         self.button_img = ctk.CTkButton(self.bottom_frame)
         self.button_espejo = ctk.CTkButton(self.bottom_frame)
-        self.button_start_recording = ctk.CTkButton(self.bottom_frame, text="Iniciar Grabación", command=self.start_recording)
-        self.button_stop_recording = ctk.CTkButton(self.bottom_frame, text="Detener Voz", command=self.stop_recording, state='disabled')
+        self.button_start_recording = ctk.CTkButton(self.bottom_frame, command=self.start_recording)
+        self.button_stop_recording = ctk.CTkButton(self.bottom_frame, command=self.stop_recording, state='disabled')
         self.button_copy_braille = ctk.CTkButton(self.bottom_frame, text="Copiar Braille", command=self.copy_braille)
 
         buttons_info = [
             ("Limpiar", self.button_clear_box, "\uf00d", self.clear_textbox),
             ("IMG", self.button_img, "\uf04b", self.to_img_normal),
             ("PDF", self.button_espejo, "\uf04b", self.to_pdf_espejo),
+            ("Por Voz",self.button_start_recording,"\uf04b", self.start_recording),
+            ("Detener Grabación",self.button_stop_recording,"\uf04b", self.stop_recording),          
             ("Copiar", self.button_copy_braille, "\uf0c5", self.copy_braille)
         ]
 
