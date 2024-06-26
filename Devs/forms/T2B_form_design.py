@@ -158,7 +158,7 @@ class T2BFormDesign():
     
     def record_audio(self):
         self.audio_filename = "temp_audio.wav"
-        self.converter.recognizer.record_audio(self.audio_filename, duration=15)  # Ajusta la duración con 60 es muy lento
+        self.converter.recognizer.record_audio(self.audio_filename, duration=30)  # Ajusta la duración con 60 es muy lento
     
     def process_recorded_audio(self):
         transcribed_text = self.converter.recognizer.transcribe_audio(self.audio_filename)
