@@ -1,5 +1,6 @@
 # Convert to PDF code and logical structure
 
+import os
 from tkinter import filedialog, messagebox
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -9,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from src.T2B_code import T2BCode
 from util.util_path import UtilPath
+from src.vosk_recognition import VoskRecognizer
 
 class ConvertTo():
 
@@ -18,6 +20,9 @@ class ConvertTo():
         self.pos = []
         self.ruta_fuente = UtilPath().get_font_path()
         self.set_font()
+        
+        model_path = r"C:\Users\johan\OneDrive\Escritorio\2024-A\CALIDAD DE SOFTWARE\PROYECTO pt2\vosk-model-small-es-0.42"
+        self.recognizer = VoskRecognizer(model_path)
 
     def get_raw_brallie(self):
         return T2BCode().get_final_braille()
@@ -121,3 +126,14 @@ class ConvertTo():
     
     def succesful_save(self):
         messagebox.showinfo("Success", "Archivo guardado con exito")
+    
+    def voice_to_braille(self):
+        audio_filename = "temp_audio.wav"
+        self.recognizer.record_audio(audio_filename, duration=5)  # Grabación de 5 segundos
+        transcribed_text = self.recognizer.transcribe_audio(audio_filename)
+        if transcribed_text:
+            braille_text = T2BCode().texto_a_braile(transcribed_text)
+            messagebox.showinfo("Transcription", f"Transcribed Text: {transcribed_text}\nBraille: {braille_text}")
+        else:
+            messagebox.showwarning("Transcription", "No se pudo transcribir el audio.")
+   
