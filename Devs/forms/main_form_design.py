@@ -34,6 +34,12 @@ class MainFormDesign(ctk.CTk):
         self.resizable(True, True)  
 
 
+    # La ventana no puede hacerse más pequeña de lo inicial
+        self.minsize(w, h)
+        
+    # Redimensionamiento solo para agrandar
+        self.resizable(True, True)  
+        
     def paneles(self):
         self.barra_sup = ctk.CTkFrame(self, height=60)
         self.barra_sup.pack(side = 'top', fill = 'both', expand = False)

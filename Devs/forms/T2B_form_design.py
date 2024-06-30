@@ -1,4 +1,4 @@
-# T# T2B Form design
+# T2B Form design
 
 import tkinter as tk
 from tkinter import font, messagebox, messagebox

@@ -9,7 +9,7 @@ class VoskRecognizer:
     def __init__(self, model_path):
         if not os.path.exists(model_path):
             raise FileNotFoundError("Model path does not exist.")
-        self.model = Model(model_path)
+        self.model = Model(model_path) # Carga el modelo de Vosk desde la ruta especificada en converTo
 
 
     def get_raw_audio(self):
