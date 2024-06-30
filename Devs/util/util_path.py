@@ -17,3 +17,7 @@ class UtilPath():
         # TODO \\fonts\\...
         ruta_fuente = self.resource_path("Devs\\fonts\\ONCE_CBE_6.ttf")
         return ruta_fuente    
+    
+    def get_model_path(self):
+        ruta_modelo = self.resource_path("Devs\\models\\vosk-model-small-es-0.42")
+        return ruta_modelo

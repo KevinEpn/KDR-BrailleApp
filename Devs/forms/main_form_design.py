@@ -22,10 +22,16 @@ class MainFormDesign(ctk.CTk):
 
     def config_window(self):
         #Configuracion inicial de la ventana
-        w, h = 800, 600
+        w, h = 1024, 600
         self.title('Traductor de Braille')
         self.geometry(f'{w}x{h}')
         util_vent.centrar_ventana(self, w, h)
+
+        # La ventana no puede hacerse más pequeña de lo inicial
+        self.minsize(w, h)
+        
+        # Redimensionamiento solo para agrandar
+        self.resizable(True, True)  
 
 
     def paneles(self):
