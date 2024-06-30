@@ -8,9 +8,10 @@ class VoskRecognizer:
     def __init__(self, model_path):
         if not os.path.exists(model_path):
             raise FileNotFoundError("Model path does not exist.")
-        self.model = Model(model_path)
+        self.model = Model(model_path) # Carga el modelo de Vosk desde la ruta especificada en converTo
 
-    def record_audio(self, filename, duration=5):
+    def record_audio(self, filename, duration=30):
+        # Graba audio desde el micrófono y guarda en un archivo WAV
         chunk = 1024
         sample_format = pyaudio.paInt16
         channels = 1
@@ -27,8 +28,8 @@ class VoskRecognizer:
             data = stream.read(chunk)
             frames.append(data)
         print("Recording complete")
-        stream.stop_stream()
-        stream.close()
+        stream.stop_stream() # Detiene el flujo de audio
+        stream.close() # Cierra el flujo de audio
         p.terminate()
         wf = wave.open(filename, 'wb')
         wf.setnchannels(channels)
@@ -38,6 +39,7 @@ class VoskRecognizer:
         wf.close()
 
     def transcribe_audio(self, filename):
+        # Transcribe el audio desde un archivo WAV usando Vosk
         wf = wave.open(filename, "rb")
         if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getframerate() != 16000:
             raise ValueError("Audio file must be WAV format mono PCM.")

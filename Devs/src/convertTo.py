@@ -21,7 +21,7 @@ class ConvertTo():
         self.ruta_fuente = UtilPath().get_font_path()
         self.set_font()
         
-        #ruta de personal, se cuelga cuando se manda el modelo general
+        #ruta personal, se cuelga cuando se manda el modelo general
         model_path = r"C:\Users\johan\OneDrive\Escritorio\2024-A\CALIDAD DE SOFTWARE\PROYECTO pt2\vosk-model-small-es-0.42"
         self.recognizer = VoskRecognizer(model_path)
 
@@ -268,7 +268,7 @@ class ConvertTo():
     
     def voice_to_braille(self):
         audio_filename = "temp_audio.wav"
-        self.recognizer.record_audio(audio_filename, duration=5)  # Grabación de 5 segundos
+        self.recognizer.record_audio(audio_filename, duration=30)  
         transcribed_text = self.recognizer.transcribe_audio(audio_filename)
         if transcribed_text:
             braille_text = T2BCode().texto_a_braile(transcribed_text)
