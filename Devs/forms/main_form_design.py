@@ -71,7 +71,7 @@ class MainFormDesign(ctk.CTk):
 
         # Etiqueta de informacion
         self.labelTituloRight = ctk.CTkLabel(
-            self.barra_sup, text = "Version 1.0 - KDR"
+            self.barra_sup, text = "Version 2.0 - KDR"
         )
         self.labelTituloRight.configure(
             font = FONT_AWSOME_10, padx = 10, width = 25
