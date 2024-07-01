@@ -5,7 +5,7 @@ import util.util_ventana as util_vent
 from util.util_config import FONT_ROBOTO_15, FONT_AWSOME_20, FONT_AWSOME_10
 
 from forms.about_form_Design import AboutFormDesign
-from forms.building_form_design import BuildingFormDesign
+from forms.B2T_form_design import B2TformDesign
 from forms.T2B_form_design import T2BFormDesign
 
 # Set colores de la GUI
@@ -126,7 +126,7 @@ class MainFormDesign(ctk.CTk):
 
     def open_build(self):
         self.clear_panel(self.fondo)
-        BuildingFormDesign(self.fondo)
+        B2TformDesign(self.fondo)
 
     def open_T2B(self):
         self.clear_panel(self.fondo)
