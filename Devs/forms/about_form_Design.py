@@ -24,7 +24,7 @@ class AboutFormDesign(ctk.CTkToplevel):
     def create_widgets(self):
         # configuracion de los widgets
         self.labelVersion = ctk.CTkLabel(
-            self, text = "Version : 1.0"
+            self, text = "Version : 2.0"
         )
         self.labelVersion.configure(
             font = FONT_AWSOME_20            
