@@ -21,3 +21,7 @@ class UtilPath():
     def get_model_path(self):
         ruta_modelo = self.resource_path("Devs\\models\\vosk-model-small-es-0.42")
         return ruta_modelo
+    
+    def get_icon_path(self):
+        ruta_icon = self.resource_path("Devs\\icon.ico")
+        return ruta_icon
