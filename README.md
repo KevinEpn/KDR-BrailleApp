@@ -64,7 +64,7 @@ python Braille_KDR.py
 La descarga iniciara automáticamente, recuerda que el nombre del archivo es Braille App_WIN_X.X_setup.rar
 
 1. **Inicio de la Instalación:**: Una vez completada la descarga ubica el archivo .rar generalmente se encuentra en Descargas, extrae el contenido del archivo .rar<br>
-Localiza el archivo Braille App_WIN_1.0_setup.exe y ejecútalo (Es recomendable hacerlo como administrador)
+Localiza el archivo Braille App_WIN_X.X_setup.exe y ejecútalo (Es recomendable hacerlo como administrador)
 
 1. **Asistente de Aplicación**: A continuación, siga los pasos del asistente de instalación.<br>
 Para mas información revisa nuestro manual de Instalación.
