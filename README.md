@@ -36,6 +36,7 @@ El Traductor de Braille es una aplicación diseñada para convertir texto alfab�
   - tkinter
   - customtkinter
   - reportlab
+  - vosk
 
 ## Instalación
 
@@ -44,7 +45,7 @@ El Traductor de Braille es una aplicación diseñada para convertir texto alfab�
 2. **Instalar Dependencias**: Ejecute el siguiente comando para instalar las dependencias necesarias:
 
    ```bash
-   pip install tkinter customtkinter reportlab
+   pip install tkinter customtkinter reportlab vosk
    ```
 
 3. **Clonar repositorio de la Aplicación**: Descargue el código fuente de la aplicación desde el repositorio o desde el archivo ZIP proporcionado.
@@ -57,13 +58,15 @@ python Braille_KDR.py
 
 ## Instalar Aplicación de Escritorio
 
-1. **Descargar el archivo de instalacion**: El instalador se encuentra en nuestro repositorio de GitHub: [Enlace de descarga](https://github.com/KevinEpn/KDR-BrailleApp/raw/main/BrailleApp_WIN_1.0_setup.rar).<br>
-La descarga iniciara automáticamente, recuerda que el nombre del archivo es Braille App_WIN_1.0_setup.rar
+1. **Descargar el archivo de instalacion**: El instalador se encuentra en nuestro repositorio de GitHub: <br>
+   [Enlace de descarga VERSION 1.0](https://github.com/KevinEpn/KDR-BrailleApp/raw/main/BrailleApp_WIN_1.0_setup.rar).<br>
+   [Enlace de descarga VERSION 2.0](https://github.com/KevinEpn/KDR-BrailleApp/raw/main/BrailleApp_WIN_2.0_setup.rar).<br>
+La descarga iniciara automáticamente, recuerda que el nombre del archivo es Braille App_WIN_X.X_setup.rar
 
-2. **Inicio de la Instalación:**: Una vez completada la descarga ubica el archivo .rar generalmente se encuentra en Descargas, extrae el contenido del archivo .rar<br>
-Localiza el archivo Braille App_WIN_1.0_setup.exe y ejecútalo (Es recomendable hacerlo como administrador)
+1. **Inicio de la Instalación:**: Una vez completada la descarga ubica el archivo .rar generalmente se encuentra en Descargas, extrae el contenido del archivo .rar<br>
+Localiza el archivo Braille App_WIN_X.X_setup.exe y ejecútalo (Es recomendable hacerlo como administrador)
 
-3. **Asistente de Aplicación**: A continuación, siga los pasos del asistente de instalación.<br>
+1. **Asistente de Aplicación**: A continuación, siga los pasos del asistente de instalación.<br>
 Para mas información revisa nuestro manual de Instalación.
 
 ## Uso de la Aplicación

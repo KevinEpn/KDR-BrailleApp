@@ -5,7 +5,7 @@ import util.util_ventana as util_vent
 from util.util_config import FONT_ROBOTO_15, FONT_AWSOME_20, FONT_AWSOME_10
 
 from forms.about_form_Design import AboutFormDesign
-from forms.building_form_design import BuildingFormDesign
+from forms.B2T_form_design import B2TformDesign
 from forms.T2B_form_design import T2BFormDesign
 
 # Set colores de la GUI
@@ -22,12 +22,24 @@ class MainFormDesign(ctk.CTk):
 
     def config_window(self):
         #Configuracion inicial de la ventana
-        w, h = 800, 600
+        w, h = 1024, 600
         self.title('Traductor de Braille')
         self.geometry(f'{w}x{h}')
         util_vent.centrar_ventana(self, w, h)
 
+        # La ventana no puede hacerse más pequeña de lo inicial
+        self.minsize(w, h)
+        
+        # Redimensionamiento solo para agrandar
+        self.resizable(True, True)  
 
+
+    # La ventana no puede hacerse más pequeña de lo inicial
+        self.minsize(w, h)
+        
+    # Redimensionamiento solo para agrandar
+        self.resizable(True, True)  
+        
     def paneles(self):
         self.barra_sup = ctk.CTkFrame(self, height=60)
         self.barra_sup.pack(side = 'top', fill = 'both', expand = False)
@@ -59,7 +71,7 @@ class MainFormDesign(ctk.CTk):
 
         # Etiqueta de informacion
         self.labelTituloRight = ctk.CTkLabel(
-            self.barra_sup, text = "Version 1.0 - KDR"
+            self.barra_sup, text = "Version 2.0 - KDR"
         )
         self.labelTituloRight.configure(
             font = FONT_AWSOME_10, padx = 10, width = 25
@@ -114,7 +126,7 @@ class MainFormDesign(ctk.CTk):
 
     def open_build(self):
         self.clear_panel(self.fondo)
-        BuildingFormDesign(self.fondo)
+        B2TformDesign(self.fondo)
 
     def open_T2B(self):
         self.clear_panel(self.fondo)
