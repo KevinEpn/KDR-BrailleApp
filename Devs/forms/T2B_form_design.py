@@ -115,6 +115,9 @@ class T2BFormDesign():
          messagebox.showerror("Error", f"Error al convertir el texto a Braille: {e}")
         
     def clear_textbox(self):
+        if not self.textBox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", "No hay texto traducido.Por favor, realiza una conversión antes.")
+            return
         if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?Este cambio no se puede deshacer"):
             self.textBox_input.delete("1.0", 'end')
             self.textBox_output.delete("1.0", 'end')
@@ -131,9 +134,15 @@ class T2BFormDesign():
             widget.destroy()
 
     def to_pdf_espejo(self):
+        if not self.textBox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", "No hay texto traducido.Por favor, realiza una conversión antes.")
+            return
         self.converter.generar_pdf_espejo()
 
     def to_img_normal(self):
+        if not self.textBox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", "No hay texto traducido.Por favor, realiza una conversión antes.")
+            return
         self.converter.convert_2_image()
 
     def copy_braille(self):

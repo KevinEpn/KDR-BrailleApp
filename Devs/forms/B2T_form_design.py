@@ -99,6 +99,9 @@ class B2TformDesign():
         button.pack(padx=25, pady=5, side='right', fill='y', expand=True)
 
     def clear_textbox(self):
+         if not self.textBox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", "No hay texto traducido.Por favor, realiza una conversión antes.")
+            return
          if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?Este cambio no se puede deshacer"):
             self.textBox_input.configure(state='normal')
             self.textBox_output.configure(state='normal')
