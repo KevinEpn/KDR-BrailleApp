@@ -142,24 +142,29 @@ class B2TformDesign():
             messagebox.showerror("Error", f"Error al procesar el audio grabado: {e}")
         
     def trad_2_braille(self, event):
-        new_text = self.get_text()
-        final_text = self.traslator.texto_a_braile(new_text)
-        self.textBox_output.configure(state='normal')
-        self.textBox_output.delete("1.0", 'end-1c')
-        self.textBox_output.insert("1.0", final_text)
-        self.textBox_output.configure(state='disabled')
-        self.textBox_input.edit_modified(False)
+        try:
+            new_text = self.get_text()
+            final_text = self.traslator.texto_a_braile(new_text)
+            self.textBox_output.configure(state='normal')
+            self.textBox_output.delete("1.0", 'end-1c')
+            self.textBox_output.insert("1.0", final_text)
+            self.textBox_output.configure(state='disabled')
+            self.textBox_input.edit_modified(False)
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al convertir el texto: {e}")
 
     def get_text(self):
         return self.textBox_input.get("1.0", 'end-1c')
 
     def copy_braille(self):
+        if not self.textBox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", "No hay texto en Braille para copiar.")
+            return
         self.textBox_output.configure(state='normal')
         self.textBox_output.clipboard_clear()
         self.textBox_output.clipboard_append(self.textBox_output.get("1.0", 'end-1c'))
         self.textBox_output.configure(state='disabled')
         messagebox.showinfo("Copiar Braille", "El texto en Braille ha sido copiado.")
-
 
     def clear_panel(self, panel):
         for widget in panel.winfo_children():

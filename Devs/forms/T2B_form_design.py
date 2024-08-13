@@ -103,6 +103,7 @@ class T2BFormDesign():
         button.pack(padx=25, pady=5, side='right', fill='y', expand=True)
 
     def trad_2_braille(self, event):
+        try:
             new_text = self.get_text()
             final_text = self.traslator.texto_a_braile(new_text)
             self.textBox_output.configure(state='normal')
@@ -110,7 +111,9 @@ class T2BFormDesign():
             self.textBox_output.insert("1.0", final_text)
             self.textBox_output.configure(state='disabled')
             self.textBox_input.edit_modified(False)
-    
+        except Exception as e:
+         messagebox.showerror("Error", f"Error al convertir el texto a Braille: {e}")
+        
     def clear_textbox(self):
         if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?"):
             self.textBox_input.delete("1.0", 'end')
