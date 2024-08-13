@@ -99,7 +99,7 @@ class B2TformDesign():
         button.pack(padx=25, pady=5, side='right', fill='y', expand=True)
 
     def clear_textbox(self):
-         if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?"):
+         if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?Este cambio no se puede deshacer"):
             self.textBox_input.configure(state='normal')
             self.textBox_output.configure(state='normal')
             self.textBox_input.delete("1.0", 'end')
@@ -110,7 +110,7 @@ class B2TformDesign():
 
     def start_recording(self):
         if self.button_start_recording.cget("state") == 'disabled':
-         messagebox.showwarning("Advertencia", "La grabación está en curso.")
+         messagebox.showwarning("Advertencia", "La grabación está en curso.Por favor, detén la grabación actual antes de iniciar una nueva.")
         return
     
         try:
@@ -123,7 +123,7 @@ class B2TformDesign():
         
     def stop_recording(self):
         if self.button_stop_recording.cget("state") == 'disabled':
-         messagebox.showwarning("Advertencia", "La grabación no está en curso.")
+         messagebox.showwarning("Advertencia", "La grabación no está en curso. Por favor, inicie una grabación antes de intentar detenerla.")
         return
     
         try:
@@ -145,9 +145,9 @@ class B2TformDesign():
                 self.textBox_input.configure(state='disabled')
                 self.trad_2_braille(None)
             else:
-                messagebox.showwarning("Transcription", "No se pudo transcribir el audio.")
+                messagebox.showwarning("Transcripción Fallida", "No se pudo transcribir el audio grabado. Por favor, intenta grabar de nuevo.")
         except Exception as e:
-            messagebox.showerror("Error", f"Error al procesar el audio grabado: {e}")
+            messagebox.showerror("Error de Procesamiento", f"Hubo un problema al procesar el audio grabado. Detalles del error: {e}")
         
     def trad_2_braille(self, event):
         try:
@@ -166,13 +166,13 @@ class B2TformDesign():
 
     def copy_braille(self):
         if not self.textBox_output.get("1.0", 'end-1c').strip():
-            messagebox.showwarning("Advertencia", "No hay texto en Braille para copiar.")
+            messagebox.showwarning("Advertencia", "No hay texto en Braille para copiar.Por favor, realiza una conversión antes de intentar copiar.")
             return
         self.textBox_output.configure(state='normal')
         self.textBox_output.clipboard_clear()
         self.textBox_output.clipboard_append(self.textBox_output.get("1.0", 'end-1c'))
         self.textBox_output.configure(state='disabled')
-        messagebox.showinfo("Copiar Braille", "El texto en Braille ha sido copiado.")
+        messagebox.showinfo("Copiar Braille", "El texto en Braille ha sido copiado al portapapeles.")
 
     def clear_panel(self, panel):
         for widget in panel.winfo_children():

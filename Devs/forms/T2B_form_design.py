@@ -115,7 +115,7 @@ class T2BFormDesign():
          messagebox.showerror("Error", f"Error al convertir el texto a Braille: {e}")
         
     def clear_textbox(self):
-        if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?"):
+        if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?Este cambio no se puede deshacer"):
             self.textBox_input.delete("1.0", 'end')
             self.textBox_output.delete("1.0", 'end')
             self.traslator.set_final_braille()
@@ -139,7 +139,7 @@ class T2BFormDesign():
     def copy_braille(self):
         # Verifica si el textBox_output está vacío
         if not self.textBox_output.get("1.0", 'end-1c').strip():
-            messagebox.showwarning("Advertencia", "No hay texto en Braille para copiar.")
+            messagebox.showwarning("Advertencia", "No hay texto en Braille para copiar.Por favor, realiza una conversión antes de intentar copiar.")
             return
     
         self.textBox_output.configure(state='normal')
