@@ -109,6 +109,10 @@ class B2TformDesign():
             self.traslator.set_final_braille()
 
     def start_recording(self):
+        if self.button_start_recording.cget("state") == 'disabled':
+         messagebox.showwarning("Advertencia", "La grabación está en curso.")
+        return
+    
         try:
             self.button_start_recording.configure(state='disabled')
             self.button_stop_recording.configure(state='normal')
@@ -118,6 +122,10 @@ class B2TformDesign():
             messagebox.showerror("Error", f"Error al iniciar la grabación: {e}")
         
     def stop_recording(self):
+        if self.button_stop_recording.cget("state") == 'disabled':
+         messagebox.showwarning("Advertencia", "La grabación no está en curso.")
+        return
+    
         try:
             self.button_start_recording.configure(state='normal')
             self.button_stop_recording.configure(state='disabled')
