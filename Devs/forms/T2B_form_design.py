@@ -103,18 +103,19 @@ class T2BFormDesign():
         button.pack(padx=25, pady=5, side='right', fill='y', expand=True)
 
     def trad_2_braille(self, event):
-        new_text = self.get_text()
-        final_text = self.traslator.texto_a_braile(new_text)
-        self.textBox_output.configure(state='normal')
-        self.textBox_output.delete("1.0", 'end-1c')
-        self.textBox_output.insert("1.0", final_text)
-        self.textBox_output.configure(state='disabled')
-        self.textBox_input.edit_modified(False)
-
+            new_text = self.get_text()
+            final_text = self.traslator.texto_a_braile(new_text)
+            self.textBox_output.configure(state='normal')
+            self.textBox_output.delete("1.0", 'end-1c')
+            self.textBox_output.insert("1.0", final_text)
+            self.textBox_output.configure(state='disabled')
+            self.textBox_input.edit_modified(False)
+    
     def clear_textbox(self):
-        self.textBox_input.delete("1.0", 'end')
-        self.textBox_output.delete("1.0", 'end')
-        self.traslator.set_final_braille()
+        if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?"):
+            self.textBox_input.delete("1.0", 'end')
+            self.textBox_output.delete("1.0", 'end')
+            self.traslator.set_final_braille()
 
     def get_text(self):
         return self.textBox_input.get("1.0", 'end-1c')
@@ -133,8 +134,15 @@ class T2BFormDesign():
         self.converter.convert_2_image()
 
     def copy_braille(self):
+        # Verifica si el textBox_output está vacío
+        if not self.textBox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", "No hay texto en Braille para copiar.")
+            return
+    
         self.textBox_output.configure(state='normal')
         self.textBox_output.clipboard_clear()
         self.textBox_output.clipboard_append(self.textBox_output.get("1.0", 'end-1c'))
         self.textBox_output.configure(state='disabled')
         messagebox.showinfo("Copiar Braille", "El texto en Braille ha sido copiado.")
+
+    
