@@ -99,38 +99,48 @@ class B2TformDesign():
         button.pack(padx=25, pady=5, side='right', fill='y', expand=True)
 
     def clear_textbox(self):
-        self.textBox_input.configure(state='normal')
-        self.textBox_output.configure(state='normal')
-        self.textBox_input.delete("1.0", 'end')
-        self.textBox_output.delete("1.0", 'end')
-        self.textBox_input.configure(state='disabled')
-        self.textBox_output.configure(state='disabled')
-        self.traslator.set_final_braille()
+         if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?"):
+            self.textBox_input.configure(state='normal')
+            self.textBox_output.configure(state='normal')
+            self.textBox_input.delete("1.0", 'end')
+            self.textBox_output.delete("1.0", 'end')
+            self.textBox_input.configure(state='disabled')
+            self.textBox_output.configure(state='disabled')
+            self.traslator.set_final_braille()
 
     def start_recording(self):
-        self.button_start_recording.configure(state='disabled')
-        self.button_stop_recording.configure(state='normal')
-        self.recorder.stop_event.clear()
-        self.recorder.record_audio()
-
+        try:
+            self.button_start_recording.configure(state='disabled')
+            self.button_stop_recording.configure(state='normal')
+            self.recorder.stop_event.clear()
+            self.recorder.record_audio()
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al iniciar la grabación: {e}")
+        
     def stop_recording(self):
-        self.button_start_recording.configure(state='normal')
-        self.button_stop_recording.configure(state='disabled')
-        self.recorder.stop_recording()
-        self.converter.voice_to_braille()
-        self.process_recorded_audio()
-
+        try:
+            self.button_start_recording.configure(state='normal')
+            self.button_stop_recording.configure(state='disabled')
+            self.recorder.stop_recording()
+            self.converter.voice_to_braille()
+            self.process_recorded_audio()
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al detener la grabación: {e}")
+        
     def process_recorded_audio(self):
-        transcribed_text = self.converter.get_transcribed_text()
-        if transcribed_text:
-            self.textBox_input.configure(state='normal')
-            self.textBox_input.delete("1.0", 'end')
-            self.textBox_input.insert("1.0", transcribed_text)
-            self.textBox_input.configure(state='disabled')
-            self.trad_2_braille(None)
-        else:
-            messagebox.showwarning("Transcription", "No se pudo transcribir el audio.")
-
+        try:
+            transcribed_text = self.converter.get_transcribed_text()
+            if transcribed_text:
+                self.textBox_input.configure(state='normal')
+                self.textBox_input.delete("1.0", 'end')
+                self.textBox_input.insert("1.0", transcribed_text)
+                self.textBox_input.configure(state='disabled')
+                self.trad_2_braille(None)
+            else:
+                messagebox.showwarning("Transcription", "No se pudo transcribir el audio.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al procesar el audio grabado: {e}")
+        
     def trad_2_braille(self, event):
         new_text = self.get_text()
         final_text = self.traslator.texto_a_braile(new_text)
