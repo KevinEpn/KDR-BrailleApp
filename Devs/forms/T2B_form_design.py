@@ -1,7 +1,6 @@
 # T2B Form design
-
 import tkinter as tk
-from tkinter import font, messagebox, messagebox
+from tkinter import font, messagebox
 import customtkinter as ctk
 from customtkinter import CTkFont
 from util.util_config import FONT_AWSOME_20, FONT_ROBOTO_15, FONT_ARIAL_15, FG_TEXTBOX
@@ -10,6 +9,10 @@ from src.convertTo import ConvertTo
 import threading
 
 class T2BFormDesign():
+    # Define constants for duplicated literals
+    COPY_BRAILLE_TEXT = "Copiar Braille"
+    NO_TRANSLATED_TEXT_WARNING = "No hay texto traducido. Por favor, realiza una conversión antes."
+    
     def __init__(self, main_panel):
         self.traslator = T2BCode()
         self.converter = ConvertTo()
@@ -21,30 +24,24 @@ class T2BFormDesign():
     def create_frames(self, main_panel):
         self.top_frame = ctk.CTkFrame(main_panel)
         self.top_frame.pack(side='top', fill='both', expand=True)
-        self.top_frame.pack(side='top', fill='both', expand=True)
 
         self.center_frame = ctk.CTkFrame(main_panel)
-        self.center_frame.pack(side='top', fill='both', expand=True)
         self.center_frame.pack(side='top', fill='both', expand=True)
 
         self.bottom_frame = ctk.CTkFrame(main_panel)
         self.bottom_frame.pack(side='top', fill='both', expand=False)
-        self.bottom_frame.pack(side='top', fill='both', expand=False)
 
     def create_top_widgets(self):
-        ancho = 20
-        alto = 1
-
         self.label_input = ctk.CTkLabel(self.top_frame, text="Texto a Convertir", font=FONT_AWSOME_20)
         self.label_input.pack(pady=5, side='top', fill='both', expand=False)    
 
         # Crear Entry widget
-        self.textBox_input = ctk.CTkTextbox(
-            self.top_frame, font=FONT_ARIAL_15, fg_color=FG_TEXTBOX, wrap = 'word'
+        self.textbox_input = ctk.CTkTextbox(
+            self.top_frame, font=FONT_ARIAL_15, fg_color=FG_TEXTBOX, wrap='word'
         )
-        self.textBox_input.pack(padx=100, pady=5, side='top', fill='both', expand=True)
-        self.textBox_input.bind("<<Modified>>", self.trad_2_braille)
-        self.textBox_input.edit_modified(False)
+        self.textbox_input.pack(padx=100, pady=5, side='top', fill='both', expand=True)
+        self.textbox_input.bind("<<Modified>>", self.trad_2_braille)
+        self.textbox_input.edit_modified(False)
 
     def create_center_widgets(self):
         self.label_output = ctk.CTkLabel(
@@ -53,10 +50,10 @@ class T2BFormDesign():
         self.label_output.pack(pady=5, side='top', fill='both', expand=False)
 
         # Crear textbox de salida
-        self.textBox_output = ctk.CTkTextbox(
-            self.center_frame, font=FONT_ARIAL_15, fg_color=FG_TEXTBOX, wrap = 'word', state='disabled'
+        self.textbox_output = ctk.CTkTextbox(
+            self.center_frame, font=FONT_ARIAL_15, fg_color=FG_TEXTBOX, wrap='word', state='disabled'
         )
-        self.textBox_output.pack(padx=100, pady=5, side='top', fill='both', expand=True)
+        self.textbox_output.pack(padx=100, pady=5, side='top', fill='both', expand=True)
 
         # Deshabilitar eventos de teclado y mouse en el textbox de salida
         self.desabilitar_eventos_textbox()
@@ -69,10 +66,10 @@ class T2BFormDesign():
                       "<Button-5>", "<Shift-Button-1>", "<Shift-B1-Motion>", "<Control-Button-1>",
                       "<Control-B1-Motion>", "<Shift-ButtonRelease-1>", "<Control-ButtonRelease-1>",
                       "<Control-Shift-Button-1>", "<Control-Shift-B1-Motion>"]:
-            self.textBox_output.bind(event, self.disable_event)
+            self.textbox_output.bind(event, self.disable_event)
 
         for event in ["<Key>", "<Control-Key>", "<Shift-Key>", "<Alt-Key>", "<Meta-Key>", "<KeyPress>", "<KeyRelease>"]:
-            self.textBox_output.bind(event, self.disable_event)
+            self.textbox_output.bind(event, self.disable_event)
 
     def disable_event(self, event):
         return "break"
@@ -82,23 +79,21 @@ class T2BFormDesign():
         self.button_clear_box = ctk.CTkButton(self.bottom_frame)
         self.button_img = ctk.CTkButton(self.bottom_frame)
         self.button_espejo = ctk.CTkButton(self.bottom_frame)
-        self.button_copy_braille = ctk.CTkButton(self.bottom_frame, text="Copiar Braille", command=self.copy_braille)
+        self.button_copy_braille = ctk.CTkButton(self.bottom_frame, text=self.COPY_BRAILLE_TEXT, command=self.copy_braille)
 
         buttons_info = [
             ("Limpiar", self.button_clear_box, "\uf00d", self.clear_textbox),
             ("IMG", self.button_img, "\uf1c5", self.to_img_normal),
             ("PDF", self.button_espejo, "\uf1c1", self.to_pdf_espejo),
-            ("Copiar Braille", self.button_copy_braille, "\uf0c5", self.copy_braille)
+            (self.COPY_BRAILLE_TEXT, self.button_copy_braille, "\uf0c5", self.copy_braille)
         ]
 
         for text, button, icon, cm in buttons_info:
-            ancho = 20
-            alto = 1
-            self.bottom_buttons_config(button, text, icon, FONT_ROBOTO_15, ancho, alto, cm)
+            self.bottom_buttons_config(button, text, icon, FONT_ROBOTO_15, cm)
         
-    def bottom_buttons_config(self, button, text, icon, font, ancho, alto, cm):
+    def bottom_buttons_config(self, button, text, icon, font, cm):
         button.configure(
-            text=f"{icon}  {text}", anchor="c", font=font, width=ancho, height=alto, command=cm
+            text=f"{icon}  {text}", anchor="c", font=font, width=20, height=1, command=cm
         )
         button.pack(padx=25, pady=5, side='right', fill='y', expand=True)
 
@@ -106,27 +101,27 @@ class T2BFormDesign():
         try:
             new_text = self.get_text()
             final_text = self.traslator.texto_a_braile(new_text)
-            self.textBox_output.configure(state='normal')
-            self.textBox_output.delete("1.0", 'end-1c')
-            self.textBox_output.insert("1.0", final_text)
-            self.textBox_output.configure(state='disabled')
-            self.textBox_input.edit_modified(False)
+            self.textbox_output.configure(state='normal')
+            self.textbox_output.delete("1.0", 'end-1c')
+            self.textbox_output.insert("1.0", final_text)
+            self.textbox_output.configure(state='disabled')
+            self.textbox_input.edit_modified(False)
         except Exception as e:
-         messagebox.showerror("Error", f"Error al convertir el texto a Braille: {e}")
+            messagebox.showerror("Error", f"Error al convertir el texto a Braille: {e}")
         
     def clear_textbox(self):
-        if not self.textBox_output.get("1.0", 'end-1c').strip():
-            messagebox.showwarning("Advertencia", "No hay texto traducido.Por favor, realiza una conversión antes.")
+        if not self.textbox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", self.NO_TRANSLATED_TEXT_WARNING)
             return
-        if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto?Este cambio no se puede deshacer"):
-            self.textBox_input.delete("1.0", 'end')
-            self.textBox_output.delete("1.0", 'end')
+        if messagebox.askyesno("Confirmación", "¿Estás seguro de que deseas limpiar el texto? Este cambio no se puede deshacer"):
+            self.textbox_input.delete("1.0", 'end')
+            self.textbox_output.delete("1.0", 'end')
             self.traslator.set_final_braille()
 
     def get_text(self):
-        return self.textBox_input.get("1.0", 'end-1c')
+        return self.textbox_input.get("1.0", 'end-1c')
 
-    def get_text_braille(self, text):
+    def get_text_braille(self):
         return self.trad_2_braille()
 
     def clear_panel(self, panel):
@@ -134,27 +129,25 @@ class T2BFormDesign():
             widget.destroy()
 
     def to_pdf_espejo(self):
-        if not self.textBox_output.get("1.0", 'end-1c').strip():
-            messagebox.showwarning("Advertencia", "No hay texto traducido.Por favor, realiza una conversión antes.")
+        if not self.textbox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", self.NO_TRANSLATED_TEXT_WARNING)
             return
         self.converter.generar_pdf_espejo()
 
     def to_img_normal(self):
-        if not self.textBox_output.get("1.0", 'end-1c').strip():
-            messagebox.showwarning("Advertencia", "No hay texto traducido.Por favor, realiza una conversión antes.")
+        if not self.textbox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", self.NO_TRANSLATED_TEXT_WARNING)
             return
         self.converter.convert_2_image()
 
     def copy_braille(self):
         # Verifica si el textBox_output está vacío
-        if not self.textBox_output.get("1.0", 'end-1c').strip():
-            messagebox.showwarning("Advertencia", "No hay texto en Braille para copiar.Por favor, realiza una conversión antes de intentar copiar.")
+        if not self.textbox_output.get("1.0", 'end-1c').strip():
+            messagebox.showwarning("Advertencia", self.NO_TRANSLATED_TEXT_WARNING)
             return
     
-        self.textBox_output.configure(state='normal')
-        self.textBox_output.clipboard_clear()
-        self.textBox_output.clipboard_append(self.textBox_output.get("1.0", 'end-1c'))
-        self.textBox_output.configure(state='disabled')
-        messagebox.showinfo("Copiar Braille", "El texto en Braille ha sido copiado.")
-
-    
+        self.textbox_output.configure(state='normal')
+        self.textbox_output.clipboard_clear()
+        self.textbox_output.clipboard_append(self.textbox_output.get("1.0", 'end-1c'))
+        self.textbox_output.configure(state='disabled')
+        messagebox.showinfo(self.COPY_BRAILLE_TEXT, "El texto en Braille ha sido copiado.")

@@ -3,6 +3,8 @@ import os, sys
 
 class UtilPath():
     def __init__(self):
+        # El constructor no realiza ninguna acción específica porque esta clase
+        # se utiliza solo para gestionar rutas de recursos a través de sus métodos.
         pass        
 
     def resource_path(self, relative_path):
@@ -14,7 +16,6 @@ class UtilPath():
         return os.path.join(base_path, relative_path)
     
     def get_font_path(self):
-        # TODO \\fonts\\...
         ruta_fuente = self.resource_path("Devs\\fonts\\ONCE_CBE_6.ttf")
         return ruta_fuente    
     
@@ -24,4 +25,4 @@ class UtilPath():
     
     def get_icon_path(self):
         ruta_icon = self.resource_path("Devs\\icon.ico")
-        return ruta_icon
+        return ruta_icon   
