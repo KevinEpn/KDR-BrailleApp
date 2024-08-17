@@ -1,4 +1,5 @@
 # Convert to PDF code and logical structure
+
 import os
 from tkinter import filedialog, messagebox
 from reportlab.lib.pagesizes import letter
@@ -16,173 +17,200 @@ class ConvertTo():
     def __init__(self):
         print("convert")
         self.raw_braille = ''
+        self.pos = []
         self.ruta_fuente = UtilPath().get_font_path()
         self.ruta_modelo = UtilPath().get_model_path()
         self.set_font()
+        
         self.recognizer = VoskRecognizer(self.ruta_modelo)
 
-    def get_raw_braille(self):
+    def get_raw_brallie(self):
         return T2BCode().get_final_braille()
+    
+    def get_pos(self):
+        return T2BCode().get_pos()
 
+    # Generar archivo PDF espejo
     def generar_pdf_espejo(self):
+
         archivo = self.get_save_name('0')
-        if not archivo:
-            return
+        self.raw_braille = self.get_raw_brallie()
+        print(f"Contenido Braille para PDF: {self.raw_braille}") 
+        # Crear un objeto canvas para el documento PDF
+        if archivo:
+            nombre = archivo
 
-        self.raw_braille = self.get_raw_braille()
-        c = self.initialize_canvas(archivo)
-        if not c:
-            return
+            # Definir el tamaño de la página
+            ancho, alto = letter
 
-        self.draw_text_on_pdf(c)
-        c.save()
-        self.succesful_save()
+            # Inicializar el lienzo (canvas)
+            c = canvas.Canvas(nombre, pagesize=letter)
 
-    def initialize_canvas(self, archivo):
-        ancho, _ = letter
-        c = canvas.Canvas(archivo, pagesize=letter)
-        c.setFont("Braille", 20)
-        c.transform(-1, 0, 0, 1, ancho, 0)
-        return c
+            # Configurar la fuente personalizada
+            c.setFont("Braille", 20)  
+            
+            # Configurar la impresión en modo espejo horizontalmente
+            c.transform(-1, 0, 0, 1, letter[0], 0)
+            text_object = c.beginText(40, letter[1] - 40)
 
-    def draw_text_on_pdf(self, c):
-        text_object = c.beginText(40, letter[1] - 40)
-        for wrapped_line in self.wrap_text_to_fit_page():
-            if text_object.getY() < 40:
-                c.drawText(text_object)
-                c.showPage()
-                text_object = self.initialize_page(c)
-            text_object.textLine(wrapped_line)
-        c.drawText(text_object)
+            lines = self.raw_braille.split('\n')
+            # Dividir el texto en líneas para que quepa en la página
+            print(lines)
+            for linea in lines:
+                # Calculo numero de paginas necesarias.
+                wrapped_lines = self.wrap_text(linea, ancho - 70, c)
+                for wrapped_line in wrapped_lines:
+                    if text_object.getY() < 40:
+                        c.drawText(text_object)
+                        c.showPage()
+                        c.setFont("Braille", 20)
+                        c.transform(-1, 0, 0, 1, letter[0], 0)
+                        text_object = c.beginText(40, letter[1] - 40)
+                    # Escribir el texto en el lienzo
+                    text_object.textLine(wrapped_line)
+            c.drawText(text_object)
+            c.showPage()
 
-    def initialize_page(self, c):
-        c.setFont("Braille", 20)
-        c.transform(-1, 0, 0, 1, letter[0], 0)
-        return c.beginText(40, letter[1] - 40)
+            # Guardar el PDF
+            c.save()
 
-    def wrap_text_to_fit_page(self):
-        ancho, _ = letter
-        lines = self.raw_braille.split('\n')
-        wrapped_lines = []
-        for line in lines:
-            wrapped_lines.extend(self.wrap_text(line, ancho - 70))
-        return wrapped_lines
+            if c:
+                self.succesful_save()
 
-    def wrap_text(self, text, max_width):
+    def wrap_text(self,text, max_width, c):
+        # Dividir el texto en líneas para que quepa en la página
         wrapped_lines = []
         words = text.split(' ')
-        current_line = ""
-
-        for word in words:
-            test_line = current_line + word if current_line else word
-            if self.text_fits(test_line, max_width):
-                current_line = test_line + ' '
-            else:
-                wrapped_lines.append(current_line)
-                current_line = word + ' '
-
-        if current_line:
-            wrapped_lines.append(current_line)
+        while words:
+            linea = ""
+            while words and c.stringWidth(linea + words[0], "Braille", 20) <= max_width:
+                linea += words.pop(0) + " "
+            wrapped_lines.append(linea)
         return wrapped_lines
 
-    def text_fits(self, text, max_width):
-        c = canvas.Canvas(None, pagesize=letter)
-        return c.stringWidth(text, "Braille", 20) <= max_width
+    def convert_2_image(self):        
+        BACKGROUND_COLOR = "white"
+        text_color = "black"
 
-    def convert_2_image(self):
+        # Filediallog para preguntar ruta para guardar la imagen
         archivo = self.get_save_name('1')
-        if not archivo:
-            return
+        self.raw_braille = self.get_raw_brallie()
+        print(f"Contenido Braille para imagen: {self.raw_braille}") 
+         
+        if archivo:
+            nombre = archivo.split('.png')
+            print(nombre)
+            
+            ancho, alto = letter
+            margen = 45            
+            max_lines_per_image = 30
 
-        self.raw_braille = self.get_raw_braille()
-        nombre = archivo.split('.png')[0]
-        self.create_images_from_text(nombre)
-        self.succesful_save()
+            # Crear nueva imagen con el tama;o especificado y el color de fondo
+            imagen = Image.new("RGB", (int(ancho), int(alto)), BACKGROUND_COLOR)
 
-    def create_images_from_text(self, nombre):
-        ancho, alto = letter
-        margen = 45
-        max_lines_per_image = 30
+            # Crear un objeto ImageDraw para dibujar en la imagen
+            draw = ImageDraw.Draw(imagen)
 
-        lines = self.raw_braille.split('\n')
-        img_count, line_count = 1, 0
-        y_inicial = margen
+            # Definir la fuente y el tamaño del texto
+            if self.ruta_fuente:
+                # fuente = ImageFont.truetype(self.ruta_fuente, 20)
+                try:
+                    fuente = ImageFont.truetype(self.ruta_fuente, 20)
+                except IOError:
+                    fuente = ImageFont.load_default()
 
-        imagen, draw, fuente = self.initialize_image(ancho, alto, margen)
+                # Dividir el texto en líneas para que quepa en la imagen
+                lineas = self.raw_braille.split('\n')
 
-        for line in lines:
-            wrapped_lines = self.split_text_to_fit_line(line, ancho - 2 * margen, draw, fuente)
-            for wrapped_line in wrapped_lines:
-                if line_count >= max_lines_per_image:
-                    self.save_image(imagen, nombre, img_count)
-                    img_count += 1
-                    line_count, y_inicial = 0, margen
-                    imagen, draw, fuente = self.initialize_image(ancho, alto, margen)
-                draw.text((margen, y_inicial), wrapped_line, font=fuente, fill=(0, 0, 0))
-                y_inicial += 23
-                line_count += 1
+                # Definir la posición inicial para escribir el texto
+                y_inicial = margen
 
-        if line_count > 0:
-            self.save_image(imagen, nombre, img_count)
+                img_count = 1
+                line_count = 0
 
-    def initialize_image(self, ancho, alto, margen):
-        imagen = Image.new("RGB", (int(ancho), int(alto)), "white")
-        draw = ImageDraw.Draw(imagen)
-        fuente = self.get_font()
-        return imagen, draw, fuente
+                print(lineas)
+                # Escribir el texto en la imagen
+                for linea in lineas:
+                    # draw.text((x_inicial, y_inicial), linea, fill = text_color, font = fuente)
+                    # y_inicial += 20
+                    wrapped_lines = self.split_text_to_fit_line(linea, int(ancho) - 2 * margen, draw, fuente)
+                    for wrapped_line in wrapped_lines:
+                        if line_count >= max_lines_per_image:  # Si se excede el número máximo de líneas por imagen
+                            # Guardar la imagen actual y crear una nueva
+                            imagen.save(f"{nombre[0]}_parte_{img_count}.png")
+                            img_count += 1
+                            line_count = 0
+                            y_inicial = margen
+                            imagen = Image.new('RGB', (int(ancho), int(alto)), color=(255, 255, 255))
+                            draw = ImageDraw.Draw(imagen)
 
-    def save_image(self, imagen, nombre, img_count):
-        imagen.save(f"{nombre}_parte_{img_count}.png")
+                        draw.text((margen, y_inicial), wrapped_line, font=fuente, fill=(0, 0, 0))
+                        y_inicial += 23
+                        line_count += 1
+                    
 
-    def get_font(self):
-        try:
-            return ImageFont.truetype(self.ruta_fuente, 20)
-        except IOError:
-            return ImageFont.load_default()
+                # Guardar la última imagen si hay alguna línea dibujada
+                if line_count > 0:
+                    imagen.save(f"{nombre[0]}_parte_{img_count}.png")
+
+                if imagen:
+                    self.succesful_save()
+
 
     def split_text_to_fit_line(self, text, max_width, draw, font):
+    # Divide el texto en varias líneas si es más ancho que max_width.
         lines = []
         words = text.split(' ')
+        print('palabras')
+        print(words)
         current_line = ""
+        is_first_word = True
 
         for word in words:
-            if word == '':
+            if is_first_word and word == '':
+                current_line = ' '
+                is_first_word = False
+                continue
+            elif word == '':
                 current_line += '\n'
             else:
                 test_line = current_line + word if current_line else word
-                if draw.textlength(test_line, font=font) <= max_width:
+                width = draw.textlength(test_line, font=font)
+                if width <= max_width:
                     current_line = test_line + ' '
                 else:
                     lines.append(current_line)
-                    current_line = word + ' '
-
+                    current_line = word + ' ' 
+            is_first_word = False
         if current_line:
             lines.append(current_line)
         return lines
 
     def set_font(self):
-        pdfmetrics.registerFont(TTFont('Braille', self.ruta_fuente))
+        # Registrar un TrueType font con la libreria ReportLab de pdfmetrics
+        pdfmetrics.registerFont(TTFont('Braille', self.ruta_fuente))        
 
     def get_save_name(self, code):
         if code == '0':
             return filedialog.asksaveasfilename(
-                defaultextension=".*", title="Save File", filetypes=(("PDF Files", "*.pdf"), ("All Files", "*.*"))
+            defaultextension = ".*", title = "Save File", filetypes = (("PDF Files", "*.pdf"), ("All Files", "*.*"))
             )
         else:
             return filedialog.asksaveasfilename(
-                defaultextension=".*", title="Save File", filetypes=(("PNG Files", "*.png"), ("All Files", "*.*"))
-            )
-
+            defaultextension = ".*", title = "Save File", filetypes = (("PNG Files", "*.png"), ("All Files", "*.*"), )
+        )
+    
     def succesful_save(self):
-        messagebox.showinfo("Success", "Archivo guardado con éxito")
-
+        messagebox.showinfo("Success", "Archivo guardado con exito")
+    
     def voice_to_braille(self):
         self.transcribed_text = self.recognizer.transcribe_audio()
         if self.transcribed_text:
-            self.raw_braille = T2BCode().texto_a_braille(self.transcribed_text)
+            self.raw_braille = T2BCode().texto_a_braile(self.transcribed_text)
             messagebox.showinfo("Transcription", f"Transcribed Text: {self.transcribed_text}\nBraille: {self.raw_braille}")
         else:
             messagebox.showwarning("Transcription", "No se pudo transcribir el audio.")
+
 
     def get_transcribed_text(self):
         return self.transcribed_text

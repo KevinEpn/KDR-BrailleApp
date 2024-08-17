@@ -9,7 +9,6 @@ from src.T2B_code import T2BCode
 from src.convertTo import ConvertTo
 from src.audio_recorder import AudioRecorder
 import threading
-
 class B2TformDesign():
     def __init__(self, main_panel):
         self.traslator = T2BCode()
